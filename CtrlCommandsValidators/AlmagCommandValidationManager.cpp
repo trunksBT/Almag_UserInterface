@@ -3,7 +3,7 @@
 #include <UserInterface/CtrlCommandsValidators/ICommandValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/DummyScanValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/NullValidationStrategy.hpp>
-#include <PluginConstraints/AlmagConstraints.hpp>
+#include <PluginSpecifics/CmdConstraints/AlmagConstraints.hpp>
 #include <Utils/Utils.hpp>
 #include <Utils/Logger.hpp>
 #include <Utils/Functions.hpp>
