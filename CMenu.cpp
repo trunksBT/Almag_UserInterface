@@ -10,6 +10,17 @@
 using namespace defaultVals;
 using namespace ui;
 
+namespace
+{
+
+bool isCmdSupported(const Strings& supportedCommands, const std::string& zeroArgOfUserInput)
+{
+return std::any_of(supportedCommands.begin(), supportedCommands.end(),
+   [&zeroArgOfUserInput](auto command){ return command == zeroArgOfUserInput; });
+}
+
+}
+
 CMenu::CMenu(
    const std::string&  inMenuName, const std::string& inCommandName,
    Database& inDB, IAlmagControllerPtr almagCtrl)
@@ -51,30 +62,30 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 		LOG(debug) << actionHelp();
 		return false;
 	}
-	std::string zeroArgOfUserInput = userInput[idx::COMMAND_OR_ACTION_NAME];
+	std::string receivedCmd = userInput[idx::COMMAND_OR_ACTION_NAME];
 
-   if (isDatabaseCommand(zeroArgOfUserInput))
+   if (isDatabaseCommand(receivedCmd))
    {
-      LOG(info) << zeroArgOfUserInput;
+      LOG(info) << receivedCmd;
 		return interpretDatabaseCommand(userInput);
    }
-   else if (isAlmagControllerCommand(zeroArgOfUserInput))
+   else if (isCmdSupported(almagCommandConstraints_, receivedCmd))
    {
-      LOG(info) << zeroArgOfUserInput;
+      LOG(info) << receivedCmd;
 		return interpretControllerCommand(userInput);
    }
-   else if (actions::HELP == zeroArgOfUserInput)
+   else if (actions::HELP == receivedCmd)
 	{
 	   LOG(info) << actionHelp();
 	   return true;
 	}
-   else if (actions::EXIT == zeroArgOfUserInput)
+   else if (actions::EXIT == receivedCmd)
    {
       return false;
    }
 	else
 	{
-      LOG(info) << zeroArgOfUserInput << actions::HELP_WHEN_UNKNOWN;
+      LOG(info) << receivedCmd << actions::HELP_WHEN_UNKNOWN;
 		return true;
 	}
 }
@@ -139,15 +150,7 @@ bool CMenu::isDatabaseCommand(const std::string& zeroArgOfUserInput)
       zeroArgOfUserInput == databaseCommands::DELETE;
 }
 
-bool CMenu::isAlmagControllerCommand(const std::string& zeroArgOfUserInput)
+void CMenu::setAlmagCommandsConstraints(const Strings& constraints)
 {
-   return
-      zeroArgOfUserInput == command::CALIBRATE or
-      zeroArgOfUserInput == command::START_POOLING or
-      zeroArgOfUserInput == command::L1::DUMMY_SCAN or 
-      zeroArgOfUserInput == command::L1::SET_LINK_SPEED or
-      zeroArgOfUserInput == command::L2::ADDRESS_ASSIGNMENT or
-      zeroArgOfUserInput == command::L2::LINK_ESTABLISHMENT or
-      zeroArgOfUserInput == command::L2::THREEGPP_RELEASE_ID or
-      zeroArgOfUserInput == command::L2::AISG_PROTOCOL_VERSION;
+   almagCommandConstraints_ = constraints;
 }

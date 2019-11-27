@@ -19,15 +19,13 @@ public:
 
    bool run(const Strings& inArgs);
    bool runPredefinedCommands(const StringsMatrix& inCommands);
+   void setAlmagCommandsConstraints(const Strings& constraints);
 
 private:
 	ReturnCode runImpl(const Strings& userInput);
 
-   bool isAction(const std::string& zeroArgOfUserInput);
    bool isDatabaseCommand(const std::string& zeroArgOfUserInput);
-   bool isAlmagControllerCommand(const std::string& zeroArgOfUserInput);
 
-   ReturnCode interpretAction(const Strings& userInput);
    ReturnCode interpretDatabaseCommand(const Strings& userInput);
    ReturnCode interpretControllerCommand(const Strings& userInput); 
 
@@ -35,5 +33,6 @@ private:
    Database& db_;
    IAlmagControllerPtr almagCtrl_;
    AlmagCommandValidationManager almagCommandValidationMgr_;
+   Strings almagCommandConstraints_;
 };
 
