@@ -12,8 +12,8 @@
 class CMenu
 {
 public:
-   CMenu(const std::string& inMenuName, const std::string& inCommandName,
-      Database& inDb, IAlmagControllerPtr almagCtrl);
+   CMenu(const std::string& inMenuName, const std::string& inCommandName, Database& inDb, IAlmagControllerPtr almagCtrl,
+      ICmdValidationManagerPtr almagCmdValidationMgr, ICmdValidationManagerPtr databaseCmdValidationMgr);
 
    virtual ~CMenu() = default;
 

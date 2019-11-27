@@ -1,24 +1,21 @@
 #include "UserInterface/CMenu.hpp"
-#include <UserInterface/CtrlCommandsValidators/AlmagCommandValidationManager.hpp>
-#include <UserInterface/CtrlCommandsValidators/DatabaseCommandValidationManager.hpp>
 #include <CommandPattern/AlmagControllerNull.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>
-#include <PluginConstraints/DatabaseConstraints.hpp> // TO REMOVE
 #include <Utils/Functions.hpp>
 #include <Utils/Utils.hpp>
 #include <Utils/Logger.hpp>
 
 using namespace defaultVals;
 using namespace ui;
-using namespace constraints;
 
 CMenu::CMenu(
-   const std::string&  inMenuName, const std::string& inCommandName,
-   Database& inDB, IAlmagControllerPtr almagCtrl)
-   : db_(inDB)
-   , almagCtrl_(almagCtrl)
-   , almagCmdValidationMgr_{std::make_unique<AlmagCommandValidationManager>(db_)}
-   , databaseCmdValidationMgr_{std::make_unique<DatabaseCommandValidationManager>(db_)}
+   const std::string& inMenuName, const std::string& inCommandName, Database& inDB,
+   IAlmagControllerPtr almagCtrl,
+   ICmdValidationManagerPtr almagCmdValidationMgr,
+   ICmdValidationManagerPtr databaseCmdValidationMgr)
+   : db_{inDB}, almagCtrl_{almagCtrl}
+   , almagCmdValidationMgr_{almagCmdValidationMgr}
+   , databaseCmdValidationMgr_{databaseCmdValidationMgr}
 {}
 
 bool CMenu::run(const Strings& inArgs)
@@ -96,7 +93,7 @@ ReturnCode CMenu::interpretDatabaseCommand(const Strings& userInput)
    LOG(debug) << "Start";
    if (const auto validatedUserInput = databaseCmdValidationMgr_->perform(userInput))
    {
-      CDatabaseCommand updateDatabase(db_, userInput);
+      CDatabaseCommand updateDatabase(db_, *validatedUserInput);
       return updateDatabase.runCommand();
    }
    LOG(warning) << "Validation rejected the command";

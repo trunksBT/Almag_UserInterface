@@ -16,4 +16,4 @@ protected:
    Database& db_;
 };
 
-using ICmdValidationManagerPtr = std::unique_ptr<ICmdValidationManager>;
+using ICmdValidationManagerPtr = std::shared_ptr<ICmdValidationManager>;
