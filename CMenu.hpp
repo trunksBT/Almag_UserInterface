@@ -6,7 +6,7 @@
 
 #include <CommandPattern/IAlmagController.hpp>
 #include <Database/Database.hpp>
-#include <UserInterface/CtrlCommandsValidators/AlmagCommandValidationManager.hpp>
+#include <UserInterface/CtrlCommandsValidators/ICmdValidationManager.hpp>
 #include <Utils/UserCommandParser.hpp>
 
 class CMenu
