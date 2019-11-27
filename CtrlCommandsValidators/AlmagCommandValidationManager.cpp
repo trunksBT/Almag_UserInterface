@@ -4,7 +4,7 @@
 #include <UserInterface/CtrlCommandsValidators/ICommandValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/DummyScanValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/NullValidationStrategy.hpp>
-#include <PluginCommandConstraints/AlmagConstraints.hpp>
+#include <PluginConstraints/AlmagConstraints.hpp>
 #include <Utils/Utils.hpp>
 
 using namespace ui;

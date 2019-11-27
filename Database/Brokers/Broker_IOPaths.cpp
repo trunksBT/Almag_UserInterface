@@ -1,10 +1,12 @@
-#include <UserInterface/Database/Brokers/Broker_IOPaths.hpp>
+#include "UserInterface/Database/Brokers/Broker_IOPaths.hpp"
 #include <string>
 
+#include <PluginConstraints/DatabaseConstraints.hpp>
 #include <Database/Objects/IOPaths.hpp>
 #include <Utils/Utils.hpp>
 
 using namespace defaultVals;
+using namespace constraints;
 
 // validation
 // conversion
@@ -28,11 +30,11 @@ Broker_IOPaths::Broker_IOPaths(Database& db, const Strings& inArgs)
 
 bool Broker_IOPaths::runCommand()
 {
-   if (ui::databaseCommands::PUT == inArgs_[idxOfDbCommand])
+   if (database::PUT == inArgs_[idxOfDbCommand])
    {
       return handlePut(inArgs_);
    }
-   else if (ui::databaseCommands::GET == inArgs_[idxOfDbCommand])
+   else if (database::GET == inArgs_[idxOfDbCommand])
    {
       return handleGet(inArgs_);
    }

@@ -1,25 +1,15 @@
-#include <iostream>
-
+#include "UserInterface/CMenu.hpp"
 #include <CommandPattern/AlmagControllerNull.hpp>
-#include <UserInterface/CMenu.hpp>
 #include <UserInterface/Database/Brokers/Broker_IOPaths.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>
-#include <Utils/Logger.hpp>
+#include <PluginConstraints/DatabaseConstraints.hpp> // TO REMOVE
+#include <Utils/Functions.hpp>
 #include <Utils/Utils.hpp>
+#include <Utils/Logger.hpp>
 
 using namespace defaultVals;
 using namespace ui;
-
-namespace
-{
-
-bool isCmdSupported(const Strings& supportedCommands, const std::string& zeroArgOfUserInput)
-{
-return std::any_of(supportedCommands.begin(), supportedCommands.end(),
-   [&zeroArgOfUserInput](auto command){ return command == zeroArgOfUserInput; });
-}
-
-}
+using namespace constraints;
 
 CMenu::CMenu(
    const std::string&  inMenuName, const std::string& inCommandName,
@@ -64,12 +54,12 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 	}
 	std::string receivedCmd = userInput[idx::COMMAND_OR_ACTION_NAME];
 
-   if (isCmdSupported(databaseCommandConstraints_, receivedCmd))
+   if (funs::anyOf(databaseCommandConstraints_, receivedCmd))
    {
       LOG(info) << receivedCmd;
 		return interpretDatabaseCommand(userInput);
    }
-   else if (isCmdSupported(almagCommandConstraints_, receivedCmd))
+   else if (funs::anyOf(almagCommandConstraints_, receivedCmd))
    {
       LOG(info) << receivedCmd;
 		return interpretControllerCommand(userInput);
@@ -112,7 +102,7 @@ ReturnCode CMenu::interpretDatabaseCommand(const Strings& userInput)
    LOG(info) << "Przed wykonaniem komendy";
 	const std::string& dbAction = userInput[idx::COMMAND_OR_ACTION_NAME];
 
-   if (databaseCommands::GET == dbAction)
+   if (database::GET == dbAction)
    {
       if (validateUserInput(userInput, reqNumOfArgsFor::db::GET))
       {
@@ -124,7 +114,7 @@ ReturnCode CMenu::interpretDatabaseCommand(const Strings& userInput)
 		   return true;
       }
    }
-   else if (databaseCommands::PUT == dbAction)
+   else if (database::PUT == dbAction)
    {
       if (validateUserInput(userInput, reqNumOfArgsFor::db::PUT))
       {
