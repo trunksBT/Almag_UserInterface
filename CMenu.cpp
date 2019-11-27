@@ -64,7 +64,7 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 	}
 	std::string receivedCmd = userInput[idx::COMMAND_OR_ACTION_NAME];
 
-   if (isDatabaseCommand(receivedCmd))
+   if (isCmdSupported(databaseCommandConstraints_, receivedCmd))
    {
       LOG(info) << receivedCmd;
 		return interpretDatabaseCommand(userInput);
@@ -142,15 +142,12 @@ ReturnCode CMenu::interpretDatabaseCommand(const Strings& userInput)
    return true;
 }
 
-bool CMenu::isDatabaseCommand(const std::string& zeroArgOfUserInput)
-{
-   return
-      zeroArgOfUserInput == databaseCommands::PUT or
-      zeroArgOfUserInput == databaseCommands::GET or
-      zeroArgOfUserInput == databaseCommands::DELETE;
-}
-
 void CMenu::setAlmagCommandsConstraints(const Strings& constraints)
 {
    almagCommandConstraints_ = constraints;
+}
+
+void CMenu::setDatabaseCommandsConstraints(const Strings& constraints)
+{
+   databaseCommandConstraints_ = constraints;
 }

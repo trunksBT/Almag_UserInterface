@@ -20,6 +20,7 @@ public:
    bool run(const Strings& inArgs);
    bool runPredefinedCommands(const StringsMatrix& inCommands);
    void setAlmagCommandsConstraints(const Strings& constraints);
+   void setDatabaseCommandsConstraints(const Strings& constraints);
 
 private:
 	ReturnCode runImpl(const Strings& userInput);
@@ -34,5 +35,6 @@ private:
    IAlmagControllerPtr almagCtrl_;
    AlmagCommandValidationManager almagCommandValidationMgr_;
    Strings almagCommandConstraints_;
+   Strings databaseCommandConstraints_;
 };
 
