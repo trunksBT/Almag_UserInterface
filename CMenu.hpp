@@ -25,15 +25,14 @@ public:
 private:
 	ReturnCode runImpl(const Strings& userInput);
 
-   bool isDatabaseCommand(const std::string& zeroArgOfUserInput);
-
    ReturnCode interpretDatabaseCommand(const Strings& userInput);
    ReturnCode interpretControllerCommand(const Strings& userInput); 
 
    UserCommandParser parser_;
    Database& db_;
    IAlmagControllerPtr almagCtrl_;
-   AlmagCommandValidationManager almagCommandValidationMgr_;
+   ICmdValidationManagerPtr almagCmdValidationMgr_;
+   ICmdValidationManagerPtr databaseCmdValidationMgr_;
    Strings almagCommandConstraints_;
    Strings databaseCommandConstraints_;
 };

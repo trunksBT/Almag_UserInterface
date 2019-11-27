@@ -1,7 +1,7 @@
 #include "UserInterface/CMenu.hpp"
 #include <UserInterface/CtrlCommandsValidators/AlmagCommandValidationManager.hpp>
+#include <UserInterface/CtrlCommandsValidators/DatabaseCommandValidationManager.hpp>
 #include <CommandPattern/AlmagControllerNull.hpp>
-#include <UserInterface/Database/Brokers/Broker_IOPaths.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>
 #include <PluginConstraints/DatabaseConstraints.hpp> // TO REMOVE
 #include <Utils/Functions.hpp>
@@ -17,7 +17,8 @@ CMenu::CMenu(
    Database& inDB, IAlmagControllerPtr almagCtrl)
    : db_(inDB)
    , almagCtrl_(almagCtrl)
-   , almagCommandValidationMgr_(db_)
+   , almagCmdValidationMgr_{std::make_unique<AlmagCommandValidationManager>(db_)}
+   , databaseCmdValidationMgr_{std::make_unique<DatabaseCommandValidationManager>(db_)}
 {}
 
 bool CMenu::run(const Strings& inArgs)
@@ -34,14 +35,14 @@ bool CMenu::run(const Strings& inArgs)
 
 bool CMenu::runPredefinedCommands(const StringsMatrix& inCommands)
 {
-   LOG(info) << "Zaczynam tworzyc predifiniowane menu";
+   LOG(info) << "Start";
    ReturnCode finalResultCode = true;
 
 	for (const auto& it : inCommands)
 	{
       finalResultCode &= runImpl(it);
 	}
-   LOG(info) << "Skonczylem tworzyc predifiniowane menu";
+   LOG(info) << "End";
 	return finalResultCode;
 }
 
@@ -74,62 +75,31 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
    {
       return false;
    }
-	else
-	{
-      LOG(info) << receivedCmd << actions::HELP_WHEN_UNKNOWN;
-		return true;
-	}
+   LOG(info) << receivedCmd << actions::HELP_WHEN_UNKNOWN;
+	return true;
 }
 
 ReturnCode CMenu::interpretControllerCommand(const Strings& userInput)
 {
-   LOG(debug) << "Przed wykonaniem komendy";
-
-   if (const auto validatedUserInput = almagCommandValidationMgr_.perform(userInput))
+   LOG(debug) << "Start";
+   if (const auto validatedUserInput = almagCmdValidationMgr_->perform(userInput))
    {
       almagCtrl_->addCommands({*validatedUserInput});
-      almagCtrl_->executeCommand();
-		return true;
+      return almagCtrl_->executeCommand();
    }
-   else
-   {
-      LOG(warning) << "Validation rejected the command";
-		return true;
-   }
+   LOG(warning) << "Validation rejected the command";
+   return true;
 }
 
 ReturnCode CMenu::interpretDatabaseCommand(const Strings& userInput)
 {
-   LOG(info) << "Przed wykonaniem komendy";
-	const std::string& dbAction = userInput[idx::COMMAND_OR_ACTION_NAME];
-
-   if (database::GET == dbAction)
+   LOG(debug) << "Start";
+   if (const auto validatedUserInput = databaseCmdValidationMgr_->perform(userInput))
    {
-      if (validateUserInput(userInput, reqNumOfArgsFor::db::GET))
-      {
-         LOG(info)
-            << userInput[0] << " "
-            << userInput[1];
-         CDatabaseCommand updateDatabase(db_, userInput);
-         updateDatabase.runCommand();
-		   return true;
-      }
+      CDatabaseCommand updateDatabase(db_, userInput);
+      return updateDatabase.runCommand();
    }
-   else if (database::PUT == dbAction)
-   {
-      if (validateUserInput(userInput, reqNumOfArgsFor::db::PUT))
-      {
-         LOG(info)
-            << userInput[0] << " "
-            << userInput[1] << " "
-            << userInput[2] << " "
-            << userInput[3];
-         CDatabaseCommand updateDatabase(db_, userInput);
-         updateDatabase.runCommand();
-         return true;
-      }
-   }
-   LOG(info) << "Po wykonaniu komendy";
+   LOG(warning) << "Validation rejected the command";
    return true;
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <Database/Database.hpp>
 #include <Utils/TypeAliases.hpp>
 
@@ -14,3 +15,5 @@ public:
 protected:
    Database& db_;
 };
+
+using ICmdValidationManagerPtr = std::unique_ptr<ICmdValidationManager>;

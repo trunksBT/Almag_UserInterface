@@ -6,6 +6,7 @@
 #include <PluginConstraints/AlmagConstraints.hpp>
 #include <Utils/Utils.hpp>
 #include <Utils/Logger.hpp>
+#include <Utils/Functions.hpp>
 
 using namespace constraints::almag;
 
@@ -18,14 +19,8 @@ MaybeStrings AlmagCommandValidationManager::perform(const Strings& userInput)
    LOG(trace) << "BEGIN " << ALMAG_COMMAND_NAME;
 
    std::unique_ptr<ICommandValidationStrategy> validationStrategy_;
-
-   if (L1::DUMMY_SCAN == ALMAG_COMMAND_NAME
-       or L1::SET_LINK_SPEED == ALMAG_COMMAND_NAME
-       or L2::ADDRESS_ASSIGNMENT == ALMAG_COMMAND_NAME
-       or L2::LINK_ESTABLISHMENT == ALMAG_COMMAND_NAME
-       or L2::THREEGPP_RELEASE_ID == ALMAG_COMMAND_NAME
-       or L2::AISG_PROTOCOL_VERSION == ALMAG_COMMAND_NAME
-       or L7::CALIBRATE == ALMAG_COMMAND_NAME)
+   if (funs::anyOf(
+   {constraints::almag::values.begin(), constraints::almag::values.end()}, ALMAG_COMMAND_NAME))
    {
       validationStrategy_ = std::make_unique<DummyScanValidationStrategy>();
    }
