@@ -1,4 +1,5 @@
 #include "UserInterface/CMenu.hpp"
+#include <UserInterface/CtrlCommandsValidators/AlmagCommandValidationManager.hpp>
 #include <CommandPattern/AlmagControllerNull.hpp>
 #include <UserInterface/Database/Brokers/Broker_IOPaths.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>

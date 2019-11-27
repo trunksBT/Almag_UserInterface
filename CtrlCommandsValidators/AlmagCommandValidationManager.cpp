@@ -1,17 +1,16 @@
-#include <UserInterface/CtrlCommandsValidators/AlmagCommandValidationManager.hpp>
-
+#include "UserInterface/CtrlCommandsValidators/AlmagCommandValidationManager.hpp"
 #include <memory>
 #include <UserInterface/CtrlCommandsValidators/ICommandValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/DummyScanValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/NullValidationStrategy.hpp>
 #include <PluginConstraints/AlmagConstraints.hpp>
 #include <Utils/Utils.hpp>
+#include <Utils/Logger.hpp>
 
-using namespace ui;
 using namespace constraints::almag;
 
 AlmagCommandValidationManager::AlmagCommandValidationManager(Database& db)
-   : db_(db) {}
+   : ICmdValidationManager{db} {}
 
 MaybeStrings AlmagCommandValidationManager::perform(const Strings& userInput)
 {
@@ -21,12 +20,12 @@ MaybeStrings AlmagCommandValidationManager::perform(const Strings& userInput)
    std::unique_ptr<ICommandValidationStrategy> validationStrategy_;
 
    if (L1::DUMMY_SCAN == ALMAG_COMMAND_NAME
-      or L1::SET_LINK_SPEED == ALMAG_COMMAND_NAME
-      or L2::ADDRESS_ASSIGNMENT == ALMAG_COMMAND_NAME
-      or L2::LINK_ESTABLISHMENT == ALMAG_COMMAND_NAME
-      or L2::THREEGPP_RELEASE_ID == ALMAG_COMMAND_NAME
-      or L2::AISG_PROTOCOL_VERSION == ALMAG_COMMAND_NAME
-      or L7::CALIBRATE == ALMAG_COMMAND_NAME)
+       or L1::SET_LINK_SPEED == ALMAG_COMMAND_NAME
+       or L2::ADDRESS_ASSIGNMENT == ALMAG_COMMAND_NAME
+       or L2::LINK_ESTABLISHMENT == ALMAG_COMMAND_NAME
+       or L2::THREEGPP_RELEASE_ID == ALMAG_COMMAND_NAME
+       or L2::AISG_PROTOCOL_VERSION == ALMAG_COMMAND_NAME
+       or L7::CALIBRATE == ALMAG_COMMAND_NAME)
    {
       validationStrategy_ = std::make_unique<DummyScanValidationStrategy>();
    }
@@ -45,4 +44,3 @@ MaybeStrings AlmagCommandValidationManager::perform(const Strings& userInput)
       return boost::none;
    }
 }
-

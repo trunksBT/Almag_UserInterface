@@ -1,20 +1,14 @@
 #pragma once
 
 #include <string>
-#include <vector>
-#include <boost/optional.hpp>
-
-#include <Database/Database.hpp>
 #include <Utils/TypeAliases.hpp>
+#include "ICmdValidationManager.hpp"
 
-class AlmagCommandValidationManager 
+class AlmagCommandValidationManager final : public ICmdValidationManager
 {
 public:
-   AlmagCommandValidationManager(Database& db);
+   explicit AlmagCommandValidationManager(Database& db);
+   virtual ~AlmagCommandValidationManager() = default;
 
-   MaybeStrings perform(const Strings& userInput);
-
-private:
-   Database& db_;
+   MaybeStrings perform(const Strings& userInput) override;
 };
-
