@@ -1,12 +1,10 @@
 #include "UserInterface/Database/Brokers/Broker_IOPaths.hpp"
 #include <string>
 
-#include <PluginSpecifics/CmdConstraints/DatabaseConstraints.hpp>
 #include <Database/Objects/IOPaths.hpp>
 #include <Utils/Utils.hpp>
 
 using namespace defaultVals;
-using namespace constraints;
 
 // validation
 // conversion
@@ -15,6 +13,8 @@ using namespace constraints;
 
 namespace
 {
+   const std::string PUT = "put";
+   const std::string GET = "get";
    constexpr int idxOfDbCommand = 0;
    constexpr int idxOfUK = 1;
    constexpr int idxOfMemberName = 2;
@@ -30,11 +30,11 @@ Broker_IOPaths::Broker_IOPaths(Database& db, const Strings& inArgs)
 
 bool Broker_IOPaths::runCommand()
 {
-   if (database::PUT == inArgs_[idxOfDbCommand])
+   if (PUT == inArgs_[idxOfDbCommand])
    {
       return handlePut(inArgs_);
    }
-   else if (database::GET == inArgs_[idxOfDbCommand])
+   else if (GET == inArgs_[idxOfDbCommand])
    {
       return handleGet(inArgs_);
    }
