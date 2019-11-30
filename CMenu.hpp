@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include <CommandPattern/IAlmagController.hpp>
+#include <CommandPattern/IController.hpp>
 #include <Database/Database.hpp>
 #include <UserInterface/CtrlCommandsValidators/ICmdValidationManager.hpp>
 #include <Utils/UserCommandParser.hpp>
