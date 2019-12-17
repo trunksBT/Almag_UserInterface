@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include <CommandPattern/IController.hpp>
+#include <Controller/IController.hpp>
 #include <Database/Database.hpp>
 #include <UserInterface/CtrlCommandsValidators/ICmdValidationManager.hpp>
 #include <Utils/UserCommandParser.hpp>

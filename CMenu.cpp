@@ -1,5 +1,5 @@
 #include "UserInterface/CMenu.hpp"
-#include <CommandPattern/AlmagControllerNull.hpp>
+#include <Controller/AlmagControllerNull.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>
 #include <Utils/Functions.hpp>
 #include <Utils/Utils.hpp>
