@@ -1,7 +1,7 @@
 #include "UserInterface/CtrlCommandsValidators/DatabaseCommandValidationManager.hpp"
 #include <UserInterface/CtrlCommandsValidators/ICommandValidationStrategy.hpp>
 #include <UserInterface/CtrlCommandsValidators/NullValidationStrategy.hpp>
-#include <PluginSpecifics/CmdConstraints/DatabaseConstraints.hpp>
+#include <Database/DatabaseConstraints.hpp>
 
 #include <Utils/Utils.hpp>
 #include <Utils/Logger.hpp>
