@@ -6,7 +6,7 @@
 
 #include <Controller/IController.hpp>
 #include <Database/Database.hpp>
-#include <UserInterface/CtrlCommandsValidators/ICmdValidationManager.hpp>
+#include <Controller/CmdValidationRules/ICmdValidationManager.hpp>
 #include <Utils/UserCommandParser.hpp>
 
 class CMenu
