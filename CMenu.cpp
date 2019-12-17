@@ -4,9 +4,11 @@
 #include <Utils/Functions.hpp>
 #include <Utils/Utils.hpp>
 #include <Utils/Logger.hpp>
+#include <Utils/PrintUtils.hpp>
 
 using namespace defaultVals;
 using namespace ui;
+using namespace printUtils;
 
 CMenu::CMenu(
    const std::string& inMenuName, const std::string& inCommandName, Database& inDB,
@@ -48,7 +50,7 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 	if (userInput.size() == 0)
 	{
       LOG(error) << "Empty user input";
-		LOG(debug) << actionHelp();
+      printStrings(almagCommandConstraints_);
 		return false;
 	}
 	std::string receivedCmd = userInput[idx::COMMAND_OR_ACTION_NAME];
@@ -65,7 +67,7 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
    }
    else if (actions::HELP == receivedCmd)
 	{
-	   LOG(info) << actionHelp();
+	   printStrings(almagCommandConstraints_);
 	   return true;
 	}
    else if (actions::EXIT == receivedCmd)
