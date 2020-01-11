@@ -4,16 +4,22 @@
 #include <string>
 #include <vector>
 
+#include <Controller/CmdValidationRules/ICmdValidationManager.hpp>
 #include <Controller/IController.hpp>
 #include <Database/Database.hpp>
-#include <Controller/CmdValidationRules/ICmdValidationManager.hpp>
 #include <Utils/UserCommandParser.hpp>
 
 class CMenu
 {
 public:
-   CMenu(const std::string& inMenuName, const std::string& inCommandName, Database& inDb, IAlmagControllerPtr almagCtrl,
-      ICmdValidationManagerPtr almagCmdValidationMgr, ICmdValidationManagerPtr databaseCmdValidationMgr);
+   CMenu(
+      const std::string& inMenuName,
+      const std::string& inCommandName,
+      Database& inDb,
+      IAlmagControllerPtr almagCtrl,
+      ICmdValidationManagerPtr almagCmdValidationMgr,
+      ICmdValidationManagerPtr databaseCmdValidationMgr
+   );
 
    virtual ~CMenu() = default;
 

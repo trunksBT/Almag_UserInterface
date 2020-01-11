@@ -5,13 +5,11 @@
 #include <UserInterface/CCommand.hpp>
 #include <Utils/TypeAliases.hpp>
 
-class CDatabaseCommand : public CCommand 
+class CDatabaseCommand final : public CCommand
 {
 public:
 	CDatabaseCommand(Database& db, const Strings& inArgs);
-  
 	virtual ~CDatabaseCommand() = default;
-
 	bool runCommand() final override;
 
 private:

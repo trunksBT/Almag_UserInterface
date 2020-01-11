@@ -6,11 +6,6 @@
 
 using namespace defaultVals;
 
-// validation
-// conversion
-// hardcodes
-// idxEs
-
 namespace
 {
    const std::string PUT = "put";
@@ -31,13 +26,10 @@ Broker_IOPaths::Broker_IOPaths(Database& db, const Strings& inArgs)
 bool Broker_IOPaths::runCommand()
 {
    if (PUT == inArgs_[idxOfDbCommand])
-   {
       return handlePut(inArgs_);
-   }
    else if (GET == inArgs_[idxOfDbCommand])
-   {
       return handleGet(inArgs_);
-   }
+
    return false;
 }
 
@@ -71,9 +63,7 @@ bool Broker_IOPaths::handleGet(const Strings& inArgs)
    const auto& objUK = inArgs_[idxOfUK];
 
    if (const auto IOPathsObj = db_.getObj<IOPaths>(objUK))
-   {
       LOG(debug) << (*IOPathsObj);
-   }
 
    return true;
 }

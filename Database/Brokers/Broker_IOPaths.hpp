@@ -4,7 +4,7 @@
 #include <UserInterface/CCommand.hpp>
 #include <Utils/TypeAliases.hpp>
 
-class Broker_IOPaths : public CCommand
+class Broker_IOPaths final : public CCommand
 {
 public:
    Broker_IOPaths(Database& db, const Strings& inArgs);

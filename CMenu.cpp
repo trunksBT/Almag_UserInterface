@@ -2,20 +2,21 @@
 #include <Controller/AlmagControllerNull.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>
 #include <Utils/Functions.hpp>
-#include <Utils/Utils.hpp>
 #include <Utils/Logger.hpp>
-#include <Utils/PrintUtils.hpp>
+#include <Utils/Utils.hpp>
 
+using namespace convert;
 using namespace defaultVals;
 using namespace ui;
-using namespace printUtils;
 
 CMenu::CMenu(
-   const std::string& inMenuName, const std::string& inCommandName, Database& inDB,
+   const std::string& inMenuName,
+   const std::string& inCommandName,
+   Database& inDB,
    IAlmagControllerPtr almagCtrl,
    ICmdValidationManagerPtr almagCmdValidationMgr,
-   ICmdValidationManagerPtr databaseCmdValidationMgr)
-   : db_{inDB}, almagCtrl_{almagCtrl}
+   ICmdValidationManagerPtr databaseCmdValidationMgr
+)  : db_{inDB}, almagCtrl_{almagCtrl}
    , almagCmdValidationMgr_{almagCmdValidationMgr}
    , databaseCmdValidationMgr_{databaseCmdValidationMgr}
 {}
@@ -25,10 +26,8 @@ bool CMenu::run(const Strings& inArgs)
    ReturnCode finalResultCode = true;
 
 	while (finalResultCode)
-	{
-	   Strings userInput = parser_.receiveAndLex();
-      finalResultCode &= runImpl(userInput);
-	}
+      finalResultCode &= runImpl(parser_.receiveAndLex());
+
 	return finalResultCode;
 }
 
@@ -38,9 +37,8 @@ bool CMenu::runPredefinedCommands(const StringsMatrix& inCommands)
    ReturnCode finalResultCode = true;
 
 	for (const auto& it : inCommands)
-	{
       finalResultCode &= runImpl(it);
-	}
+
    LOG(info) << "End";
 	return finalResultCode;
 }
@@ -50,7 +48,7 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 	if (userInput.size() == 0)
 	{
       LOG(error) << "Empty user input";
-      printStrings(almagCommandConstraints_);
+      LOG(info) << toString(almagCommandConstraints_);
 		return false;
 	}
 	std::string receivedCmd = userInput[idx::COMMAND_OR_ACTION_NAME];
@@ -67,7 +65,7 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
    }
    else if (actions::HELP == receivedCmd)
 	{
-	   printStrings(almagCommandConstraints_);
+      LOG(info) << toString(almagCommandConstraints_);
 	   return true;
 	}
    else if (actions::EXIT == receivedCmd)
