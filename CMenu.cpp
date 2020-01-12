@@ -39,7 +39,7 @@ bool CMenu::runPredefinedCommands(const StringsMatrix& inCommands)
 	for (const auto& it : inCommands)
       finalResultCode &= runImpl(it);
 
-   LOG(info) << "End";
+   LOG(info) << END;
 	return finalResultCode;
 }
 
