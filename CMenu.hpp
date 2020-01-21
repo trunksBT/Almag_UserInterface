@@ -16,8 +16,8 @@ public:
       const std::string& inMenuName,
       const std::string& inCommandName,
       Database& inDb,
-      IAlmagControllerPtr almagCtrl,
-      ICmdValidationManagerPtr almagCmdValidationMgr,
+      IKorytkoMagControllerPtr korytkomagCtrl,
+      ICmdValidationManagerPtr korytkomagCmdValidationMgr,
       ICmdValidationManagerPtr databaseCmdValidationMgr
    );
 
@@ -25,7 +25,7 @@ public:
 
    bool run(const Strings& inArgs);
    bool runPredefinedCommands(const StringsMatrix& inCommands);
-   void setAlmagCommandsConstraints(const Strings& constraints);
+   void setKorytkoMagCommandsConstraints(const Strings& constraints);
    void setDatabaseCommandsConstraints(const Strings& constraints);
 
 private:
@@ -36,10 +36,10 @@ private:
 
    UserCommandParser parser_;
    Database& db_;
-   IAlmagControllerPtr almagCtrl_;
-   ICmdValidationManagerPtr almagCmdValidationMgr_;
+   IKorytkoMagControllerPtr korytkomagCtrl_;
+   ICmdValidationManagerPtr korytkomagCmdValidationMgr_;
    ICmdValidationManagerPtr databaseCmdValidationMgr_;
-   Strings almagCommandConstraints_;
+   Strings korytkomagCommandConstraints_;
    Strings databaseCommandConstraints_;
 };
 

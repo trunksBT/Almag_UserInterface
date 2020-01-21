@@ -1,5 +1,5 @@
 #include "UserInterface/CMenu.hpp"
-#include <Controller/AlmagControllerNull.hpp>
+#include <Controller/KorytkoMagControllerNull.hpp>
 #include <UserInterface/Database/CDatabaseCommand.hpp>
 #include <Utils/Functions.hpp>
 #include <Utils/Logger.hpp>
@@ -13,11 +13,11 @@ CMenu::CMenu(
    const std::string& inMenuName,
    const std::string& inCommandName,
    Database& inDB,
-   IAlmagControllerPtr almagCtrl,
-   ICmdValidationManagerPtr almagCmdValidationMgr,
+   IKorytkoMagControllerPtr korytkomagCtrl,
+   ICmdValidationManagerPtr korytkomagCmdValidationMgr,
    ICmdValidationManagerPtr databaseCmdValidationMgr
-)  : db_{inDB}, almagCtrl_{almagCtrl}
-   , almagCmdValidationMgr_{almagCmdValidationMgr}
+)  : db_{inDB}, korytkomagCtrl_{korytkomagCtrl}
+   , korytkomagCmdValidationMgr_{korytkomagCmdValidationMgr}
    , databaseCmdValidationMgr_{databaseCmdValidationMgr}
 {}
 
@@ -48,7 +48,7 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 	if (userInput.size() == 0)
 	{
       LOG(error) << "Empty user input";
-      LOG(info) << toString(almagCommandConstraints_);
+      LOG(info) << toString(korytkomagCommandConstraints_);
 		return false;
 	}
 	std::string receivedCmd = userInput[idx::COMMAND_OR_ACTION_NAME];
@@ -58,14 +58,14 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
       LOG(info) << receivedCmd;
 		return interpretDatabaseCommand(userInput);
    }
-   else if (funs::anyOf(almagCommandConstraints_, receivedCmd))
+   else if (funs::anyOf(korytkomagCommandConstraints_, receivedCmd))
    {
       LOG(info) << receivedCmd;
 		return interpretControllerCommand(userInput);
    }
    else if (actions::HELP == receivedCmd)
 	{
-      LOG(info) << toString(almagCommandConstraints_);
+      LOG(info) << toString(korytkomagCommandConstraints_);
 	   return true;
 	}
    else if (actions::EXIT == receivedCmd)
@@ -79,10 +79,10 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 ReturnCode CMenu::interpretControllerCommand(const Strings& userInput)
 {
    LOG(debug) << "Start";
-   if (const auto validatedUserInput = almagCmdValidationMgr_->perform(userInput))
+   if (const auto validatedUserInput = korytkomagCmdValidationMgr_->perform(userInput))
    {
-      almagCtrl_->addCommands({*validatedUserInput});
-      return almagCtrl_->executeCommand();
+      korytkomagCtrl_->addCommands({*validatedUserInput});
+      return korytkomagCtrl_->executeCommand();
    }
    LOG(warning) << "Validation rejected the command";
    return true;
@@ -100,9 +100,9 @@ ReturnCode CMenu::interpretDatabaseCommand(const Strings& userInput)
    return true;
 }
 
-void CMenu::setAlmagCommandsConstraints(const Strings& constraints)
+void CMenu::setKorytkoMagCommandsConstraints(const Strings& constraints)
 {
-   almagCommandConstraints_ = constraints;
+   korytkomagCommandConstraints_ = constraints;
 }
 
 void CMenu::setDatabaseCommandsConstraints(const Strings& constraints)
