@@ -33,13 +33,13 @@ bool CMenu::run(const Strings& inArgs)
 
 bool CMenu::runPredefinedCommands(const StringsMatrix& inCommands)
 {
-   LOG(info) << "Start";
+   LOG(debug) << "Start";
    ReturnCode finalResultCode = true;
 
 	for (const auto& it : inCommands)
       finalResultCode &= runImpl(it);
 
-   LOG(info) << END;
+   LOG(debug) << END;
 	return finalResultCode;
 }
 
@@ -55,17 +55,17 @@ ReturnCode CMenu::runImpl(const Strings& userInput)
 
    if (funs::anyOf(databaseCommandConstraints_, receivedCmd))
    {
-      LOG(info) << receivedCmd;
+      LOG(debug) << receivedCmd;
 		return interpretDatabaseCommand(userInput);
    }
    else if (funs::anyOf(korytkomagCommandConstraints_, receivedCmd))
    {
-      LOG(info) << receivedCmd;
+      LOG(debug) << receivedCmd;
 		return interpretControllerCommand(userInput);
    }
    else if (actions::HELP == receivedCmd)
 	{
-      LOG(info) << toString(korytkomagCommandConstraints_);
+      LOG(info) << toString(korytkomagCommandConstraints_, END_LINE);
 	   return true;
 	}
    else if (actions::EXIT == receivedCmd)
